@@ -70,7 +70,9 @@ The nmap scan reveals the following open ports:
 
 Navigating to ``http://10.10.193.198`` leads us to a generic nginx landing page.
 
-![tryhackmewriteup](/docs/assets/images/1.png)
+![tryhackmewriteup](../docs/assets/images/1.png)
+![tryhackmewriteup](https://github.com/i-saumitra/Voice-controlled-MP3-Player/blob/master/screenshot.jpg)
+
 
 Viewing the page source code doesn't lead us anywhere, there are no clues or hints.
 We can check the /robots.txt as discovered by our initial nmap scan.
