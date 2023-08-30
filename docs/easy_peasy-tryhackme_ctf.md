@@ -120,8 +120,9 @@ This seems to be a dead end...Let's take a look at the source code.
 
 Ah! It seems like we've found a base64 encoded string.
 We have several options to decode it such as:
-https://www.base64decode.org/
+https://www.base64decode.org/  
 https://gchq.github.io/CyberChef/
+
 or via the command line interface using the following command:
 ````bash
 echo "base64_string_to_decode" | base64 -d
