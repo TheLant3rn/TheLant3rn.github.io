@@ -70,7 +70,7 @@ The nmap scan reveals the following open ports:
 
 Navigating to ``http://10.10.193.198`` leads us to a generic nginx landing page.
 
-![nginx landing page](docs/assets/images/Pasted image 20230829134126.png)
+![nginx landing page](docs/assets/images/1.png)
 
 Viewing the page source code doesn't lead us anywhere, there are no clues or hints.
 We can check the /robots.txt as discovered by our initial nmap scan.
