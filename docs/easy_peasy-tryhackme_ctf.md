@@ -143,7 +143,7 @@ Everything seems like a normal Apache 2 landing page but upon closer inspection 
 
 This is Flag 3.
 - 2.3 Crack the hash with easypeasy.txt, What is the flag 3? **✓**
-    (This flag was in clear text and cracking the hash wasn't necessary.)
+    (This flag was in clear text and cracking the hash wasn't necessary.)  
 
 Lets run gobuster to see if we can find any directories.
 ```bash
