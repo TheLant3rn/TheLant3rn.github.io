@@ -1,3 +1,7 @@
+Hi, welcome to my very first writeup. 
+
+Today we will be tackling "Easy Peasy" CTF over at TryHackMe https://tryhackme.com/room/easypeasyctf .
+This CTF will have us practice tools such as Nmap, GoBuster, Steghide, John the Ripper, various ROT and decoding tasks and finally exploit a vullnerable cronjob. 
 
 Task 1  
 1.1 How many ports are open?  
@@ -378,3 +382,7 @@ Looking around we find the hidden `.root.txt` flag.
 - 2.8 What is the root flag?**✓**
 
 Having found the root flag we have now completed the CTF :)
+
+I hope you found this writeup helpful!
+
+   **-TheLant3rn**
