@@ -1,3 +1,5 @@
 welcome to my test page
 
-this will be a link soon
+[Capture The Flag (CTFs) - Writeups](TheLant3rn.github.io/Writeups)
+
+z
