@@ -1,6 +1,6 @@
 Hi, welcome to my very first writeup. 
 
-Today we will be tackling "Easy Peasy" CTF over at TryHackMe https://tryhackme.com/room/easypeasyctf .
+Today we will be tackling "Easy Peasy" CTF over at TryHackMe [https://tryhackme.com/room/easypeasyctf](https://tryhackme.com/room/easypeasyctf) .
 This CTF will have us practice tools such as Nmap, GoBuster, Steghide, John the Ripper, various ROT and decoding tasks and finally exploit a vullnerable cronjob. 
 
 Task 1  
